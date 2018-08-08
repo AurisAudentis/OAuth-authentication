@@ -1,0 +1,6 @@
+node_modules/
+*.sql
+**/stag.json
+**/prod.json
+**/*.log
+.idea/

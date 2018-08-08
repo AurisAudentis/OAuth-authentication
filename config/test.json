@@ -1,0 +1,11 @@
+{
+  "logging": "dev",
+  "port": 4200,
+  "database": {
+    "dialect": "sqlite",
+    "storage": ":memory:",
+    "username": "",
+    "password": "",
+    "database": "mainDb"
+  }
+}
