@@ -13,36 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const UserGrant_Model_1 = __importDefault(require("./UserGrant.Model"));
+const User_Model_1 = __importDefault(require("./User.Model"));
 const Client_Model_1 = __importDefault(require("./Client.Model"));
-let User = class User extends sequelize_typescript_1.Model {
+let UserGrant = class UserGrant extends sequelize_typescript_1.Model {
 };
 __decorate([
+    sequelize_typescript_1.ForeignKey(() => User_Model_1.default),
     sequelize_typescript_1.Column(sequelize_typescript_1.DataType.UUIDV4),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], UserGrant.prototype, "userId", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
+    sequelize_typescript_1.ForeignKey(() => Client_Model_1.default),
+    sequelize_typescript_1.Column(sequelize_typescript_1.DataType.UUIDV4),
     __metadata("design:type", String)
-], User.prototype, "firstName", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], User.prototype, "lastName", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-__decorate([
-    sequelize_typescript_1.BelongsToMany(() => Client_Model_1.default, () => UserGrant_Model_1.default),
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Array)
-], User.prototype, "clients", void 0);
-User = __decorate([
+], UserGrant.prototype, "clientId", void 0);
+UserGrant = __decorate([
     sequelize_typescript_1.Table
-], User);
-exports.default = User;
+], UserGrant);
+exports.default = UserGrant;

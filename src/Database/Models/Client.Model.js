@@ -8,31 +8,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-let User = class User extends sequelize_typescript_1.Model {
+const User_Model_1 = __importDefault(require("./User.Model"));
+const UserGrant_Model_1 = __importDefault(require("./UserGrant.Model"));
+let Client = class Client extends sequelize_typescript_1.Model {
 };
 __decorate([
     sequelize_typescript_1.Column(sequelize_typescript_1.DataType.UUIDV4),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], Client.prototype, "id", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], User.prototype, "firstName", void 0);
+], Client.prototype, "client_name", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], User.prototype, "lastName", void 0);
+], Client.prototype, "client_secret", void 0);
 __decorate([
+    sequelize_typescript_1.BelongsToMany(() => User_Model_1.default, () => UserGrant_Model_1.default),
     sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-User = __decorate([
+    __metadata("design:type", Array)
+], Client.prototype, "users", void 0);
+Client = __decorate([
     sequelize_typescript_1.Table
-], User);
-exports.default = User;
+], Client);
+exports.default = Client;
