@@ -15,9 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const UserGrant_Model_1 = __importDefault(require("./UserGrant.Model"));
 const Client_Model_1 = __importDefault(require("./Client.Model"));
+const bcrypt_1 = require("bcrypt");
+const v4 = require("uuid/v4");
 let User = class User extends sequelize_typescript_1.Model {
+    static hashPw(user) {
+        return bcrypt_1.hash(user.password, 12)
+            .then(hash => user.password = hash);
+    }
+    static makeId(user) {
+        user.id = v4();
+    }
 };
 __decorate([
+    sequelize_typescript_1.PrimaryKey,
     sequelize_typescript_1.Column(sequelize_typescript_1.DataType.UUIDV4),
     __metadata("design:type", String)
 ], User.prototype, "id", void 0);
@@ -39,9 +49,20 @@ __decorate([
 ], User.prototype, "password", void 0);
 __decorate([
     sequelize_typescript_1.BelongsToMany(() => Client_Model_1.default, () => UserGrant_Model_1.default),
-    sequelize_typescript_1.Column,
     __metadata("design:type", Array)
 ], User.prototype, "clients", void 0);
+__decorate([
+    sequelize_typescript_1.BeforeCreate,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [User]),
+    __metadata("design:returntype", void 0)
+], User, "hashPw", null);
+__decorate([
+    sequelize_typescript_1.BeforeCreate,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [User]),
+    __metadata("design:returntype", void 0)
+], User, "makeId", null);
 User = __decorate([
     sequelize_typescript_1.Table
 ], User);

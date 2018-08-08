@@ -1,10 +1,12 @@
-import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
+import {BeforeCreate, BelongsToMany, Column, DataType, Model, PrimaryKey, Table} from "sequelize-typescript";
 import UserGrant from "./UserGrant.Model";
 import Client from "./Client.Model";
+import {hash} from "bcrypt";
+import v4 = require("uuid/v4");
 
 @Table
 export default class User extends Model<User> {
-
+    @PrimaryKey
     @Column(DataType.UUIDV4)
     id: string;
 
@@ -21,6 +23,15 @@ export default class User extends Model<User> {
     password: string;
 
     @BelongsToMany(() => Client, () => UserGrant)
-    @Column
     clients: Client[];
+
+    @BeforeCreate
+    static hashPw(user: User) {
+        return hash(user.password, 12)
+            .then(hash => user.password = hash);
+    }
+    @BeforeCreate
+    static makeId(user: User) {
+        user.id = v4();
+    }
 }
