@@ -1,14 +1,18 @@
-import {BeforeCreate, BelongsToMany, Column, DataType, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {BeforeCreate, Column, HasMany, Scopes, Table} from "sequelize-typescript";
 import UserGrant from "./UserGrant.Model";
-import Client from "./Client.Model";
 import {hash} from "bcrypt";
+import {idModel} from "../AbstractModels/idModel.Model";
 import v4 = require("uuid/v4");
 
+@Scopes({
+    full: {
+        include: [{
+            model: () => UserGrant.scope("client")
+        }]
+    },
+})
 @Table
-export default class User extends Model<User> {
-    @PrimaryKey
-    @Column(DataType.UUIDV4)
-    id: string;
+export default class User extends idModel<User> {
 
     @Column
     firstName: string;
@@ -22,8 +26,8 @@ export default class User extends Model<User> {
     @Column
     password: string;
 
-    @BelongsToMany(() => Client, () => UserGrant)
-    clients: Client[];
+    @HasMany( () => UserGrant, "userId")
+    clientGrants: UserGrant[];
 
     @BeforeCreate
     static hashPw(user: User) {

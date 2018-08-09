@@ -1,23 +1,13 @@
-import {app} from "../../src/app";
-import config from "../../config/config";
-import {assert, use, request} from 'chai';
+import {assert, request, use} from 'chai';
 import chaiHttp = require("chai-http");
+
 use(chaiHttp);
 
 
 describe('Bare path /', () => {
-    const server = new app();
-    before((done) => {
-        server.launch(config.port);
-        done();
-    });
-
-    after(() => {
-        server.exit();
-    });
 
     it("should return {hello: 'world'}", (done => {
-        request(server.app)
+        request("localhost:3001")
             .get('/')
             .end(function (err, res) {
                 assert.notExists(err);

@@ -2,9 +2,9 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
 import express from "express";
-import {indexRouter} from "./Routers/index";
 import config from "../config/config";
 import {logger} from "./Infrastructure/Logger";
+import {oauthRouter} from "./Routers/oauth";
 
 
 export class app {
@@ -45,7 +45,7 @@ export class app {
     }
 
     private routers(): void {
-        this.app.use('/', indexRouter);
+        this.app.use('/', oauthRouter);
     }
 }
 

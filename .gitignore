@@ -4,3 +4,5 @@ node_modules/
 **/prod.json
 **/*.log
 .idea/
+**/*.key
+*.js
