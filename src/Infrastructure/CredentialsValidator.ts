@@ -17,8 +17,7 @@ export function validateGrants(body: {user, grant_type, client_name, client_secr
         return Promise.all([validateClientCredentials(body.client_name, body.client_secret, body.user), validateUserCredentials(body.user, body.password)])
             .then(results => results[0] && results[1]);
     } else {
-        // TODO
-        return Promise.resolve(false);
+        return body.user.isValidToken(body.refresh_token);
     }
 }
 

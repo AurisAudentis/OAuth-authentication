@@ -22,7 +22,7 @@ function generateJWT(user: User): Promise<string> {
 
 function generateRefreshToken(user: User) {
     const refrToken = v4();
-    user.$create("token", {id: refrToken, expAt: moment().add(2, 'days').toDate()});
+    user.setToken(refrToken);
     return refrToken;
 }
 
