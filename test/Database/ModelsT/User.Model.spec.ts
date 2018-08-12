@@ -5,6 +5,7 @@ import User from "../../../src/Database/Models/User.Model";
 import {describe, it } from 'mocha';
 import {compare, compareSync} from "bcrypt";
 import Client from "../../../src/Database/Models/Client.Model";
+import {testUser} from "../../initializer.spec";
 
 describe("the user model", () => {
     const db = sequelize;
@@ -65,4 +66,15 @@ describe("the user model", () => {
             .catch((err) => done(err))
 
     });
+
+    it("should have associated Client", (done) => {
+        User.findOne({where: {id: testUser.id}})
+            .then(user => user.getClients())
+            .then(clients => {
+                assert.exists(clients);
+                assert.isNotEmpty(clients);
+            })
+            .then(done)
+            .catch(done)
+    })
 });

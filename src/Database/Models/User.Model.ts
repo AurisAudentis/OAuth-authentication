@@ -3,6 +3,8 @@ import UserGrant from "./UserGrant.Model";
 import {hash} from "bcrypt";
 import {idModel} from "../AbstractModels/idModel.Model";
 import v4 = require("uuid/v4");
+import Token from "./Token.Model";
+import Client from "./Client.Model";
 
 @Scopes({
     full: {
@@ -29,6 +31,15 @@ export default class User extends idModel<User> {
     @HasMany( () => UserGrant, "userId")
     clientGrants: UserGrant[];
 
+    @HasMany(() => Token)
+    refreshTokens: Token[];
+
+    getClients(): Promise<Client[]> {
+        // @ts-ignore
+        return this.$get<UserGrant[]>("clientGrants", {scope: ['client']})
+            .then(grants => grants.map(grant => grant.client))
+    }
+
     @BeforeCreate
     static hashPw(user: User) {
         return hash(user.password, 12)
@@ -38,4 +49,5 @@ export default class User extends idModel<User> {
     static makeId(user: User) {
         user.id = v4();
     }
+
 }

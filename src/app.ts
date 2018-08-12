@@ -45,7 +45,7 @@ export class app {
     }
 
     private routers(): void {
-        this.app.use('/', oauthRouter);
+        this.app.use('/auth', oauthRouter);
     }
 }
 

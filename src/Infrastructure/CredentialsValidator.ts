@@ -4,24 +4,35 @@ import User from "../Database/Models/User.Model";
 
 export function validateReqBody(body) {
     if (body.grant_type === "password") {
-        return body.uid && body.password;
+        return !!(body.uid && body.password && body.client_name && body.client_secret);
     } else if (body.grant_type === "refresh_token") {
-        return body.uid && body.refresh_token;
+        return !!(body.uid && body.refresh_token && body.client_name && body.client_secret);
     } else {
         return false;
     }
 }
 
-export function validateClientCredentials(client_name: string, client_secret: string, user_id: string): PromiseLike<boolean> {
+export function validateGrants(body: {user, grant_type, client_name, client_secret, password?, refresh_token?}) {
+    if(body.grant_type === "password") {
+        return Promise.all([validateClientCredentials(body.client_name, body.client_secret, body.user), validateUserCredentials(body.user, body.password)])
+            .then(results => results[0] && results[1]);
+    } else {
+        // TODO
+        return Promise.resolve(false);
+    }
+}
+
+
+ function validateClientCredentials(client_name: string, client_secret: string, user: User): Promise<boolean> {
+    // @ts-ignore
     return Client.scope("grants").findOne({where: {client_name}})
-        .then(client => validateSecret(client, client_secret) && hasGrantFromUser(client, user_id))
+        .then(client => validateSecret(client, client_secret) && hasGrantFromUser(client, user.id))
         .then(result => result)
 
 }
 
-export function validateUserCredentials(user_id: string, password: string): PromiseLike<boolean> {
-    return User.findOne({where: {id:user_id}})
-        .then(user => compare(password, user.password))
+ function validateUserCredentials(user: User, password: string): Promise<boolean> {
+    return compare(password, user.password);
 }
 
 function validateSecret(client, client_secret): Promise<boolean> {
@@ -29,6 +40,5 @@ function validateSecret(client, client_secret): Promise<boolean> {
 }
 
 function hasGrantFromUser(client, user_id) : Promise<boolean>{
-    return client.UserGrants.includes(user_id);
+    return client.userGrants.map(grant => grant.userId).includes(user_id);
 }
-
