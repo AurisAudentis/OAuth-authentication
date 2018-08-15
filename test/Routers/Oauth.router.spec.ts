@@ -2,11 +2,13 @@ import {assert, request, use} from 'chai';
 import chaiHttp = require("chai-http");
 import {testClient, testUser} from "../initializer.spec";
 use(chaiHttp);
+import {describe} from "mocha";
+
 
 describe("oauth Router endpoints", () => {
     it("should return the key", (done) => {
         request('http://localhost:3001')
-            .get('/auth/key')
+            .get('/oauth/key')
             .send()
             .then(((res) => {
                 assert.exists(res.text);
@@ -29,7 +31,7 @@ describe("oauth Router endpoints", () => {
         };
 
         request('http://localhost:3001')
-            .post('/auth/token')
+            .post('/oauth/token')
             .send(body)
             .then(((res) => {
                 assert.equal(res.status, 200, "not succeeded");
@@ -51,7 +53,7 @@ describe("oauth Router endpoints", () => {
         };
 
         request('http://localhost:3001')
-            .post('/auth/token')
+            .post('/oauth/token')
             .send(body)
             .then(((res) => {
                 assert.equal(res.status, 200, "not succeeded");

@@ -1,12 +1,13 @@
 const env = process.env.NODE_ENV || "dev";
-const dev = require('./dev');
-const prod = require('./prod');
-const test = require('./test.json');
+import dev from "./dev.json";
+import production from "./production.json";
+import test from "./test.json";
 
 const configs = {
     dev,
-    prod,
+    production,
     test
 };
+console.log("environement: " + env);
 const config = configs[env];
 export default config;

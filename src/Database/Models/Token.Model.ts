@@ -1,5 +1,5 @@
 import {idModel} from "../AbstractModels/idModel.Model";
-import {BelongsTo, Column, ForeignKey, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Table} from "sequelize-typescript";
 import User from "./User.Model";
 import {Moment} from "moment";
 
@@ -9,8 +9,8 @@ export default class Token extends idModel<Token> {
     user: User;
 
     @ForeignKey(() => User)
-    @Column
-    userId: number;
+    @Column(DataType.STRING)
+    userId: string;
 
     @Column
     expAt: Date;

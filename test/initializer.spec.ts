@@ -2,6 +2,7 @@ import {sequelize} from "../src/Database/Sequelize";
 import {app} from "../src/app";
 import * as faker from "faker";
 import User from "../src/Database/Models/User.Model";
+import UserGrant from "../src/Database/Models/UserGrant.Model";
 
 const db = sequelize;
 const server = new app();
@@ -20,14 +21,14 @@ export const testUser = {
 };
 
 before((done) => {
-    db.sync()
+    db.sync({force: true})
         .then(() => User.create(testUser))
         .then((user) => {
             testUser.id = user.id;
             return user.$create("clientGrant", {})
         })
         .then((grant) => grant.$create("client", testClient))
-        .then(client => testClient.id = client.id)
+        .then((grant: UserGrant) => testClient.id = grant.clientId)
         .then(() => server.launch(3001))
         .then(() => done())
         .catch(err => done(err))

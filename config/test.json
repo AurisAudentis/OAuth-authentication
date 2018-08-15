@@ -3,7 +3,7 @@
   "port": 4200,
   "database": {
     "dialect": "sqlite",
-    "storage": ":memory:",
+    "storage": "./data/data.sqlite",
     "username": "",
     "password": "",
     "database": "mainDb"

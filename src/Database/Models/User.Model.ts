@@ -2,9 +2,9 @@ import {BeforeCreate, Column, HasMany, Scopes, Table} from "sequelize-typescript
 import UserGrant from "./UserGrant.Model";
 import {hash} from "bcrypt";
 import {idModel} from "../AbstractModels/idModel.Model";
-import v4 = require("uuid/v4");
 import Token from "./Token.Model";
 import Client from "./Client.Model";
+import v4 = require("uuid/v4");
 import moment = require("moment");
 
 @Scopes({
@@ -16,12 +16,6 @@ import moment = require("moment");
 })
 @Table
 export default class User extends idModel<User> {
-
-    @Column
-    firstName: string;
-
-    @Column
-    lastName: string;
 
     @Column
     email: string;
@@ -58,9 +52,6 @@ export default class User extends idModel<User> {
         return hash(user.password, 12)
             .then(hash => user.password = hash);
     }
-    @BeforeCreate
-    static makeId(user: User) {
-        user.id = v4();
-    }
+
 
 }

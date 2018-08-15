@@ -12,11 +12,11 @@ import {idModel} from "../AbstractModels/idModel.Model";
 export default class UserGrant extends idModel<UserGrant> {
 
     @ForeignKey(() => User)
-    @Column(DataType.UUIDV4)
+    @Column(DataType.STRING)
     userId: string;
 
     @ForeignKey(() => Client)
-    @Column(DataType.UUIDV4)
+    @Column(DataType.STRING)
     clientId: string;
 
     @BelongsTo(() => User)

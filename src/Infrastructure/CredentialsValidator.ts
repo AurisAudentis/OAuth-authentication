@@ -14,7 +14,7 @@ export function validateReqBody(body) {
 
 export function validateGrants(body: {user, grant_type, client_name, client_secret, password?, refresh_token?}) {
     if(body.grant_type === "password") {
-        return Promise.all([validateClientCredentials(body.client_name, body.client_secret, body.user), validateUserCredentials(body.user, body.password)])
+        return Promise.all<boolean, boolean>([validateClientCredentials(body.client_name, body.client_secret, body.user), validateUserCredentials(body.user, body.password)])
             .then(results => results[0] && results[1]);
     } else {
         return body.user.isValidToken(body.refresh_token);
@@ -22,22 +22,20 @@ export function validateGrants(body: {user, grant_type, client_name, client_secr
 }
 
 
- function validateClientCredentials(client_name: string, client_secret: string, user: User): Promise<boolean> {
-    // @ts-ignore
-    return Client.scope("grants").findOne({where: {client_name}})
-        .then(client => validateSecret(client, client_secret) && hasGrantFromUser(client, user.id))
-        .then(result => result)
-
+ function validateClientCredentials(client_name: string, client_secret: string, user: User): PromiseLike<boolean> {
+    return Promise.resolve(Client.scope("grants").findOne({where: {client_name}})
+        .then(client => validateSecret(client, client_secret) && hasGrantFromUser(client, user.id)))
 }
 
- function validateUserCredentials(user: User, password: string): Promise<boolean> {
+ export function validateUserCredentials(user: User, password: string): Promise<boolean> {
     return compare(password, user.password);
 }
 
-function validateSecret(client, client_secret): Promise<boolean> {
+export function validateSecret(client: Client, client_secret: string): Promise<boolean> {
     return compare(client_secret, client.client_secret);
 }
 
 function hasGrantFromUser(client, user_id) : Promise<boolean>{
+    if(!client) return Promise.resolve(false);
     return client.userGrants.map(grant => grant.userId).includes(user_id);
 }

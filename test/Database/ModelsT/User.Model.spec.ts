@@ -29,14 +29,14 @@ describe("the user model", () => {
     });
 
     it("should find the recently created user", (done) => {
-        User.findOne({where: {firstName: newUser.firstName as string}})
-            .then(user => assert.equal(user.firstName, newUser.firstName))
+        User.findOne({where: {email: newUser.email }})
+            .then(user => assert.equal(user.email, newUser.email))
             .then(() => done())
             .catch((err) => done(err));
     });
 
     it("should have an id", (done) => {
-        User.findOne({where: {firstName: newUser.firstName as string}})
+        User.findOne({where: {email: newUser.email as string}})
             .then(user => assert.exists(user.id))
             .then(() => done())
             .catch((err) => done(err));

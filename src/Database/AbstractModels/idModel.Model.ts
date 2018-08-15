@@ -4,7 +4,7 @@ import v4 = require("uuid/v4");
 
 export abstract class idModel<T extends Model<T>> extends Model<T>{
     @PrimaryKey
-    @Column(DataType.UUIDV4)
+    @Column(DataType.STRING)
     id: string;
 
     @BeforeCreate

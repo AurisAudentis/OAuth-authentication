@@ -19,7 +19,6 @@ describe("The functions that check client secret and password validity", () => {
             client_name: "test",
             client_secret: "test"
         };
-        console.log(body);
         assert.isTrue(validateReqBody(body))
     });
 

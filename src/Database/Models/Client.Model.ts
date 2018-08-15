@@ -1,4 +1,4 @@
-import {BeforeCreate, Column, HasMany, Scopes, Table} from "sequelize-typescript";
+import {BeforeCreate, Column, DataType, HasMany, Scopes, Table} from "sequelize-typescript";
 import UserGrant from "./UserGrant.Model";
 import {hash} from "bcrypt";
 import {idModel} from "../AbstractModels/idModel.Model";
@@ -12,7 +12,7 @@ import {idModel} from "../AbstractModels/idModel.Model";
 @Table
 export default class Client extends idModel<Client> {
 
-    @Column
+    @Column(DataType.STRING)
     client_name: string;
 
     @Column

@@ -1,0 +1,11 @@
+{
+  "logging": "dev",
+  "port": 4200,
+  "database": {
+    "dialect": "mysql",
+    "username": "oauth",
+    "password": "e8e85cmc",
+    "database": "oauth",
+    "host": "localhost"
+  }
+}
