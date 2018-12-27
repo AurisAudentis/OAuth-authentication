@@ -7,7 +7,7 @@ export function uidToUser (req, res, next) {
                 req.body.user = user;
                 next();
             } else {
-             res.status(400).end();
+             res.status(401).json({message:"User not found."}).end();
             }
         })
         .catch(err => {

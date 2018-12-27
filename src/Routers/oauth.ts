@@ -10,7 +10,7 @@ export const oauthRouter = express.Router();
 const key = fs.readFileSync(path.join(__dirname, "../Database/data/public.key"));
 
 oauthRouter.post('/token', uidToUser, (req, res) => {
-    if(!validateReqBody(req.body)) {res.status(400).end(); return;}
+    if(!validateReqBody(req.body)) {res.status(400).json({message: "Your request is invalid."}).end(); return;}
 
     validateGrants(req.body).then((valid) => {
         if (valid) {
