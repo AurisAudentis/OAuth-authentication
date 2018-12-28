@@ -6,7 +6,7 @@ import v4 = require("uuid/v4");
 import moment = require("moment");
 
 // Run on startup, might as well be sync.
-const privkey = fs.readFileSync(path.join(__dirname, "../Database/data/private.key"), 'utf8');
+const privkey = fs.readFileSync(path.join(__dirname, "../../config/private.key"), 'utf8');
 
 function generateJWT(user: User): Promise<string> {
     return new Promise((resolve, reject) => {

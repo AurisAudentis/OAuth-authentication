@@ -1,6 +1,6 @@
 import {BeforeCreate, Column, DataType, HasMany, Scopes, Table} from "sequelize-typescript";
 import UserGrant from "./UserGrant.Model";
-import {hash} from "bcrypt";
+import {hash} from "bcryptjs";
 import {idModel} from "../AbstractModels/idModel.Model";
 
 

@@ -1,6 +1,6 @@
 {
   "logging": "dev",
-  "port": 4200,
+  "port": 3000,
   "database": {
     "dialect": "sqlite",
     "storage": "./data/data.sqlite",

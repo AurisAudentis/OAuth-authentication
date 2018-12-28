@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "test": "node ./node_modules/mocha/bin/mocha --recursive test"
+    "start": "node build/index.js",
+    "test": "node ./node_modules/mocha/bin/mocha --recursive test",
+    "build": "tsc -p tsconfig2.json"
   },
   "dependencies": {
-    "bcrypt": "^3.0.3",
+    "@types/bcryptjs": "^2.4.2",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "^4.16.4",
@@ -15,6 +17,7 @@
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
     "morgan": "^1.9.1",
+    "mysql3": "^0.1.5",
     "node-pre-gyp": "^0.10.3",
     "reflect-metadata": "^0.1.12",
     "sequelize": "^4.42.0",

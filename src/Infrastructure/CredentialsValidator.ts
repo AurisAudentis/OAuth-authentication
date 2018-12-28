@@ -1,5 +1,5 @@
 import Client from "../Database/Models/Client.Model";
-import {compare} from "bcrypt";
+import {compare} from "bcryptjs";
 import User from "../Database/Models/User.Model";
 
 export function validateReqBody(body) {

@@ -7,7 +7,7 @@ import * as path from "path";
 const express = require('express');
 export const oauthRouter = express.Router();
 
-const key = fs.readFileSync(path.join(__dirname, "../Database/data/public.key"));
+const key = fs.readFileSync(path.join(__dirname, "../../config/public.key"));
 
 oauthRouter.post('/token', uidToUser, (req, res) => {
     if(!validateReqBody(req.body)) {res.status(400).json({message: "Your request is invalid."}).end(); return;}
