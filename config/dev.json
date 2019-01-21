@@ -7,5 +7,6 @@
     "username": "",
     "password": "",
     "database": "mainDb"
-  }
+  },
+  "allowed_redirects": ["localhost"]
 }

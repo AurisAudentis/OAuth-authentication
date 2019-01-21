@@ -1,0 +1,28 @@
+#maindiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#icon-header {
+    height: 11vh;
+    margin-top: 2vh;
+}
+
+#logincard {
+    width: 30vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20vh;
+}
+
+#fields {
+    width: 80%;
+    margin-top: 3vh;
+    margin-bottom: 5vh;
+}
+.btn-primary {
+    width:100%;
+    margin-top: 1vh;
+}

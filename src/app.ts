@@ -6,6 +6,8 @@ import config from "../config/config";
 import {logger} from "./Infrastructure/Logger";
 import {oauthRouter} from "./Routers/oauth";
 import {userRouter} from "./Routers/User";
+import { ssoRouter } from "./Routers/SSO";
+import path from "path";
 
 
 export class app {
@@ -34,6 +36,8 @@ export class app {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(cookieParser());
+        this.app.use('/oauth/s', express.static(path.join(__dirname, '../views')));
+        console.log(__dirname);
     }
 
     private debugLogging() {
@@ -48,6 +52,7 @@ export class app {
     private routers(): void {
         this.app.use('/oauth/user', userRouter);
         this.app.use('/oauth', oauthRouter);
+        this.app.use("/oauth/sso", ssoRouter);
     }
 }
 
