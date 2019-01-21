@@ -5,7 +5,6 @@ import express from "express";
 import config from "../config/config";
 import {logger} from "./Infrastructure/Logger";
 import {oauthRouter} from "./Routers/oauth";
-import {userRouter} from "./Routers/User";
 import { ssoRouter } from "./Routers/SSO";
 import path from "path";
 
@@ -50,7 +49,6 @@ export class app {
     }
 
     private routers(): void {
-        this.app.use('/oauth/user', userRouter);
         this.app.use('/oauth', oauthRouter);
         this.app.use("/oauth/sso", ssoRouter);
     }

@@ -1,19 +1,9 @@
 import {BeforeCreate, Column, HasMany, Scopes, Table} from "sequelize-typescript";
-import UserGrant from "./UserGrant.Model";
 import {hash} from "bcryptjs";
 import {idModel} from "../AbstractModels/idModel.Model";
 import Token from "./Token.Model";
-import Client from "./Client.Model";
-import v4 = require("uuid/v4");
 import moment = require("moment");
 
-@Scopes({
-    full: {
-        include: [{
-            model: () => UserGrant.scope("client")
-        }]
-    },
-})
 @Table
 export default class User extends idModel<User> {
 
@@ -23,17 +13,8 @@ export default class User extends idModel<User> {
     @Column
     password: string;
 
-    @HasMany( () => UserGrant, "userId")
-    clientGrants: UserGrant[];
-
     @HasMany(() => Token)
     refreshTokens: Token[];
-
-    getClients(): Promise<Client[]> {
-        // @ts-ignore
-        return this.$get<UserGrant[]>("clientGrants", {scope: ['client']})
-            .then(grants => grants.map(grant => grant.client))
-    }
 
     isValidToken(tokenId): Promise<boolean> {
         // @ts-ignore

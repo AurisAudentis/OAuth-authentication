@@ -1,7 +1,5 @@
-import { generateTokens } from "../Infrastructure/TokenGenerator";
-import { any } from "bluebird";
-import {join} from "path";
-import config from "../../config/config"
+import {registerUser, registerValidator} from "../Infrastructure/UserValidator";
+
 import { handleAuthRequest } from "../Infrastructure/RedirectHandler";
 
 const express = require('express');
@@ -9,10 +7,16 @@ export const ssoRouter = express.Router();
 
 ssoRouter.get('/getToken', (req, res) => {
     handleAuthRequest(req, res)
-        .catch(err => {res.status(err.status); res.json(err.message);})
-})
+        .catch(err => {res.status(err.status); res.json(err);})
+});
 
-ssoRouter.get('/setToken', (req, res) => {
-    res.cookie("test", "yay!");
-    res.redirect("getToken?wut=yes");
-})
+
+ssoRouter.post('/register', ((req, res) => {
+    if (registerValidator(req.body)){
+        registerUser(req.body)
+            .then((user) => res.json({uid: user.id}))
+            .catch((err) => res.status(err.status).json({err: err.err, message: err.message}))
+    } else {
+        res.status(400).json({err:"MALFORMED_REQUEST", message:"You did not specify the needed info."})
+    }
+}));

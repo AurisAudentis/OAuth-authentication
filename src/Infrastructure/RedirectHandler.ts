@@ -6,31 +6,23 @@ import { generateTokens } from "./TokenGenerator";
 
 
 
-export function handleAuthRequest(req, res): Promise<{}> { //TODO: Wow, this needs some cleanup...
+export function handleAuthRequest(req, res): Promise<void> { //TODO: Wow, this needs some cleanup...
 
     const cookie = req.cookies.token
     const redirect = req.query.redirect
 
-    const wrapper = (url) => {
-        const handle = (resolve, reject) => {
-            if(!validateRequest(url)) {
-                reject({status: 401, message: "Your hostname is not recognized."});
-                return;
-            }
-            if(redirectIfNoCookie(res, url, cookie)) {return;}
-            else {
-                generateTokenFromCookie(cookie)
-                    .then(tokens => {
-                        res.redirect(redirect + `/?acct=${tokens.access_token}&refrt=${tokens.refresh_token}`)
-                        res.send();
-                    });
-            }
-        }
-        return new Promise(handle);
-    }
    
     return promiseWrappedUrl(redirect)
-                        .then(wrapper);
+                        .then((url: URL) => validateOrigin(url))
+                        .then((url) => {redirectIfNoCookie(res, url, cookie) || sendTokensFromCookie(res, url, cookie)})
+
+}
+
+function sendTokensFromCookie(res, url:URL, cookie) {
+    return generateTokenFromCookie(cookie)
+            .then((tokens) => {
+                res.redirect(url.href + "?accesstoken=" + tokens.access_token + "&refreshtoken=" + tokens.refresh_token);
+            })
 }
 
 function promiseWrappedUrl(urlS:string): Promise<URL> {
@@ -56,11 +48,15 @@ function redirectIfNoCookie(res, url, cookie): boolean {
     return(!cookie);
 }
 
-function validateRequest(origin: URL): boolean {
-    return config.allowed_redirects.includes(origin.hostname);
+function validateOrigin(origin: URL): URL {
+    if (!config.allowed_redirects.includes(origin.hostname)) {
+        throw {status: 401, message: "Your origin is not recognized."}
+    }
+
+    return origin; // For easy chaining
 }
 
-function generateTokenFromCookie(token) {
+function generateTokenFromCookie(token): Promise<{access_token: string, refresh_token: string}> {
     return new Promise((resolve, reject) => {
         verify(token, key, (err, decrypted) => {
             if(err) {
@@ -73,3 +69,4 @@ function generateTokenFromCookie(token) {
     .then((uid) => User.findOne({where: {id: uid}}))
     .then(generateTokens)
 }
+

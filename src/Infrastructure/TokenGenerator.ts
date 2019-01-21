@@ -3,7 +3,6 @@ import * as fs from "fs";
 import * as path from "path";
 import User from "../Database/Models/User.Model";
 import v4 = require("uuid/v4");
-import moment = require("moment");
 
 // Run on startup, might as well be sync.
 const privkey = fs.readFileSync(path.join(__dirname, "../../config/private.key"), 'utf8');
