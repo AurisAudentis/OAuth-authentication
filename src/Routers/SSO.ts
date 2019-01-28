@@ -1,6 +1,7 @@
 import {registerUser, registerValidator} from "../Infrastructure/UserValidator";
 
 import { handleAuthRequest } from "../Infrastructure/RedirectHandler";
+import { handleLoginRequest } from "../Infrastructure/LoginHandler";
 
 const express = require('express');
 export const ssoRouter = express.Router();
@@ -10,6 +11,10 @@ ssoRouter.get('/getToken', (req, res) => {
         .catch(err => {res.status(err.status); res.json(err);})
 });
 
+ssoRouter.post('/login', (req, res) => {
+    handleLoginRequest(req, res)
+        .catch(err => {res.status(err.status); res.json(err)})
+})
 
 ssoRouter.post('/register', ((req, res) => {
     if (registerValidator(req.body)){

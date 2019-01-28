@@ -2,7 +2,8 @@ import config from "../../config/config";
 import { verify } from "jsonwebtoken";
 import { key } from "../Routers/oauth";
 import User from "../Database/Models/User.Model";
-import { generateTokens } from "./TokenGenerator";
+import { generateJWT } from "./TokenGenerator";
+import Token from "../Database/Models/Token.Model";
 
 
 
@@ -20,8 +21,8 @@ export function handleAuthRequest(req, res): Promise<void> { //TODO: Wow, this n
 
 function sendTokensFromCookie(res, url:URL, cookie) {
     return generateTokenFromCookie(cookie)
-            .then((tokens) => {
-                res.redirect(url.href + "?accesstoken=" + tokens.access_token + "&refreshtoken=" + tokens.refresh_token);
+            .then((token) => {
+                res.redirect(url.href + "?accesstoken=" + token);
             })
 }
 
@@ -42,7 +43,7 @@ function promiseWrappedUrl(urlS:string): Promise<URL> {
 function redirectIfNoCookie(res, url, cookie): boolean {
     if(!cookie){
         res.cookie("redirect", url);
-        res.redirect("../s/login.html");
+        res.redirect("../s/login.html?redirect=" +url);
         res.send();
     }
     return(!cookie);
@@ -56,17 +57,9 @@ function validateOrigin(origin: URL): URL {
     return origin; // For easy chaining
 }
 
-function generateTokenFromCookie(token): Promise<{access_token: string, refresh_token: string}> {
-    return new Promise((resolve, reject) => {
-        verify(token, key, (err, decrypted) => {
-            if(err) {
-                reject(err);
-                return;
-            }
-            resolve(decrypted.uid);
-        })
-    })
-    .then((uid) => User.findOne({where: {id: uid}}))
-    .then(generateTokens)
+function generateTokenFromCookie(token): PromiseLike<string> {
+    return Token.findOne({where: {id: token}, include: [User]})
+        .then(token => {if (!token) {throw {status: 400}} return token})
+        .then(token => generateJWT(token.user))
 }
 
