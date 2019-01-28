@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm run build && node build/index.js",
     "test": "node ./node_modules/mocha/bin/mocha --recursive test",
-    "build": "node ./node_modules/typescript/bin/tsc -v -p tsconfig2.json"
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig2.json"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
