@@ -12,16 +12,17 @@ $(() => {
 
 
     function sendRequest(mail, pw) {
-        const url = "http://" + window.location.host;
+        const url = "https://" + window.location.host;
         $.post({
             url: url + "/oauth/sso/login",
             data: {mail:mail, pw:pw}
         })
-        .done((resp) => resp.success ? redirect(resp):error(resp))
+        .done((resp) => resp.success ? redirect(resp, url):error(resp))
     }
 
-    function redirect(resp) {
-        window.location.href = resp.url;
+    function redirect(resp, url) {
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = url + "/oauth/sso/getToken?redirect=" + params.get("redirect");
     }
 
     function error(resp) {
