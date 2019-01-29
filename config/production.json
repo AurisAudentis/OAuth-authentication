@@ -2,10 +2,11 @@
   "logging": "dev",
   "port": 3000,
   "database": {
-    "dialect": "mysql",
-    "username": "oauth",
-    "password": "e8e85cmc",
-    "database": "oauth",
-    "host": "172.17.0.2"
-  }
+      "dialect": "mysql",
+      "username": "oauth",
+      "password": "e8e85cmc",
+      "database": "oauth",
+      "host": "172.17.0.2"
+  },
+  "allowed_redirects": ["maxiemgeldhof.com"]
 }
