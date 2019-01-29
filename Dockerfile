@@ -12,6 +12,8 @@ RUN npm run build
 
 COPY ./config ./build/config/
 
+COPY ./views ./build/views
+
 ENV NODE_ENV production
 
 EXPOSE 3000
