@@ -1,5 +1,5 @@
 import {BeforeCreate, Column, HasMany, Scopes, Table} from "sequelize-typescript";
-import {hash} from "bcryptjs";
+import {hash, compare} from "bcryptjs";
 import {idModel} from "../AbstractModels/idModel.Model";
 import Token from "./Token.Model";
 import moment = require("moment");
@@ -26,6 +26,15 @@ export default class User extends idModel<User> {
     setToken(tokenId) {
         return Token.destroy({where: {userId: this.id}})
             .then(() => this.$create("refreshToken", {id: tokenId, expAt: moment().add(2, 'days').toDate()}))
+    }
+
+    checkPassword(pw: string): Promise<void> {
+        return compare(pw,this.password)
+            .then((res) => {
+                if(!res) {
+                    throw {status: 401, message: "Invalid password"}
+                }
+            })
     }
 
     @BeforeCreate
