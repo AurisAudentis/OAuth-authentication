@@ -1,6 +1,7 @@
 import User from "../Database/Models/User.Model";
 
 export function registerValidator(body) {
+    body.email = body.mail ||body.email
     return (body.email || body.uid) && body.password;
 }
 
