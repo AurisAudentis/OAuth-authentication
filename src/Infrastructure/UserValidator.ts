@@ -11,3 +11,9 @@ export function registerUser(body: {email: string, password: string}): Promise<U
             .then((user) => {if (user) throw {status: 409, err: "USER_EXISTS", message: "This user already exists"}})
             .then(() => User.create({email: body.email, password: body.password}))
 }
+
+export function validateTokenRequest(body) {
+    if(!body.mail && !(body.pw || body.token)) {
+        throw {status: 400, err:"INCOMPLETE_REQUEST", message: "Your request is incomplete."}
+    }
+}

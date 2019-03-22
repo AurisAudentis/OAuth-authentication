@@ -1,5 +1,4 @@
 import User from "../Database/Models/User.Model";
-import { compare } from "bcryptjs";
 import { generateRefreshToken } from "./TokenGenerator";
 
 

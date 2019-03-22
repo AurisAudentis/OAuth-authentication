@@ -57,7 +57,7 @@ function validateOrigin(origin: URL): URL {
     return origin; // For easy chaining
 }
 
-function generateTokenFromCookie(token): PromiseLike<string> {
+export function generateTokenFromCookie(token): PromiseLike<string> {
     return Token.findOne({where: {id: token}, include: [User]})
         .then(token => {if (!token) {throw {status: 400}} return token})
         .then(token => generateJWT(token.user))
