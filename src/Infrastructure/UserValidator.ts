@@ -13,7 +13,7 @@ export function registerUser(body: {email: string, password: string}): Promise<U
 }
 
 export function validateTokenRequest(body) {
-    if(!body.mail && !(body.pw || body.token)) {
+    if(!body.mail || !(body.pw || body.token)) {
         throw {status: 400, err:"INCOMPLETE_REQUEST", message: "Your request is incomplete."}
     }
 }
