@@ -5,6 +5,7 @@ import { generateJWT, generateRefreshToken } from "../Infrastructure/TokenGenera
 import { handleError } from "../Infrastructure/ErrorHandler";
 import { validateTokenRequest } from "../Infrastructure/UserValidator";
 import { generateTokenFromCookie } from "../Infrastructure/RedirectHandler";
+import bodyParser = require("body-parser");
 
 const express = require('express');
 export const oauthRouter = express.Router();
@@ -19,6 +20,9 @@ oauthRouter.get('/key', (req, res) => {
 oauthRouter.post('/token', (req, res) => {
     req.body.pw = req.body.password || req.body.pw;
     req.body.mail = req.body.email || req.body.mail;
+    req.body.refrtoken = req.body.refrtoken || req.body.token
+
+
     validateTokenRequest(req.body);
     emailToUser(req.body.mail)
         .then(user => {
