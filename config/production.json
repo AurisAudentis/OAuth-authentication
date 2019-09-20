@@ -6,7 +6,7 @@
       "username": "oauth",
       "password": "e8e85cmc",
       "database": "oauth",
-      "host": "172.17.0.2"
+      "host": "mysql"
   },
-  "allowed_redirects": ["maxiemgeldhof.com"]
+  "allowed_redirects": ["maxiemgeldhof.com", "192.168.0.208"]
 }
