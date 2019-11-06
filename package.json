@@ -21,7 +21,7 @@
     "mysql3": "^0.1.5",
     "node-pre-gyp": "^0.10.3",
     "reflect-metadata": "^0.1.12",
-    "sequelize": "^4.42.0",
+    "sequelize": "^5.15.1",
     "sequelize-typescript": "^0.6.6",
     "sqlite3": "^4.0.4",
     "uuid": "^3.3.2",
